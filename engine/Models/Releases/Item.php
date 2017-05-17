@@ -24,6 +24,23 @@ class Item {
         $db->update($query);
     }
 
+    public function setBetaError($release_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `releases` SET";
+        $query .= " `beta_error` = 1";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+    }
+
+    public function completeBetaReplication($release_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `releases` SET";
+        $query .= " `beta_replication` = 0,";
+        $query .= " `beta_completed_at` = NOW()";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+    }
+
     public function create($options){
         $label = !empty($options["label"]) ? $options["label"] : null;
         $files = !empty($options["files"]) ? $options["files"] : array();
