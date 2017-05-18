@@ -25,6 +25,9 @@ class Peer {
                 
                 if($condition == "is null"){
                     $where .= "`{$table}`.`{$column}` IS NULL";
+                }                
+                if($condition == "is not null"){
+                    $where .= "`{$table}`.`{$column}` IS NOT NULL";
                 }
                 elseif($condition == "equals"){
                     $where .= "`{$table}`.`{$column}` = '{$rvalue}'";

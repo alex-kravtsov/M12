@@ -6,6 +6,47 @@ use M21_Engine\Core\Factory;
 
 class Item {
 
+    public function beginProductionUpdate($release_id){
+        $db = Factory::getDatabase();
+
+        $query = "UPDATE `releases` SET";
+        $query .= " `production_update` = 1";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+
+        $query = "UPDATE `servers` SET";
+        $query .= " `replication` = 1";
+        $query .= " WHERE `dev` = 0 AND `beta` = 0";
+        $db->update($query);
+    }
+
+    public function completeProductionUpdate($release_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `releases` SET";
+        $query .= " `production_replication` = 0,";
+        $query .= " `production_update` = 0,";
+        $query .= " `production_completed_at` = NOW()";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+    }
+
+    public function beginProductionBackup($release_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `releases` SET";
+        $query .= " `production_backup` = 1";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+    }
+
+    public function completeProductionBackup($release_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `releases` SET";
+        $query .= " `production_backup` = 0,";
+        $query .= " `backup_completed_at` = NOW()";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+    }
+
     public function beginProductionReplication($release_id){
         $db = Factory::getDatabase();
         $query = "UPDATE `releases` SET";
@@ -20,6 +61,14 @@ class Item {
         $query = "UPDATE `releases` SET";
         $query .= " `beta_replication` = 1,";
         $query .= " `beta_started_at` = NOW()";
+        $query .= " WHERE `id` = {$release_id}";
+        $db->update($query);
+    }
+
+    public function setProductionError($release_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `releases` SET";
+        $query .= " `production_error` = 1";
         $query .= " WHERE `id` = {$release_id}";
         $db->update($query);
     }

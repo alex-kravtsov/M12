@@ -39,8 +39,11 @@ CREATE TABLE `releases` (
     `beta_started_at` DATETIME NULL,
     `beta_completed_at` DATETIME NULL,
     `production_replication` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    `production_backup` TINYINT UNSIGNED NOT NULL DEFAULT 0,
+    `production_update` TINYINT UNSIGNED NOT NULL DEFAULT 0,
     `production_error` TINYINT UNSIGNED NOT NULL DEFAULT 0,
     `production_started_at` DATETIME NULL,
+    `backup_completed_at` DATETIME NULL,
     `production_completed_at` DATETIME NULL
 ) ENGINE=InnoDB DEFAULT CHARSET utf8;
 

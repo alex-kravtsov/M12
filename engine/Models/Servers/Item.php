@@ -6,6 +6,20 @@ class Item {
 
     public $error = null;
 
+    public function makeBackup($server){
+        $address = "{$server["ssh_login"]}@{$server["ip_address"]}";
+        $remote_command = "tar -cjf {$server["backup_file"]} {$server["project_directory"]}";
+        $command = "ssh {$address} '{$remote_command}'";
+            \system($command, $return_var);
+            if($return_var != 0){
+                $this->error = "Backup error: {$command}";
+                return false;
+            }
+        }
+
+        return true;
+    }
+
     public function replication($options){
         $source = !empty($options["source"]) ? $options["source"] : null;
         $target = !empty($options["target"]) ? $options["target"] : null;
