@@ -49,8 +49,10 @@ class Worker1 {
         $server_peer = new ServerPeer();
         $servers = $server_peer->get(array(
             "filterby" => array(
-                "column" => "backup_file",
-                "condition" => "is not null",
+                array(
+                    "column" => "backup_file",
+                    "condition" => "is not null",
+                ),
             ),
         ));
         if(empty($servers[0]) ){
@@ -77,9 +79,11 @@ class Worker1 {
         while(!$done){
             $servers = $server_peer->get(array(
                 "filterby" => array(
-                    "column" => "error",
-                    "condition" => "equals",
-                    "rvalue" => 1,
+                    array(
+                        "column" => "error",
+                        "condition" => "equals",
+                        "rvalue" => 1,
+                    ),
                 ),
             ));
             if(!empty($servers[0]) ){
@@ -96,9 +100,11 @@ class Worker1 {
 
             $servers = $server_peer->get(array(
                 "filterby" => array(
-                    "column" => "replication",
-                    "condition" => "equals",
-                    "rvalue" => 1,
+                    array(
+                        "column" => "replication",
+                        "condition" => "equals",
+                        "rvalue" => 1,
+                    ),
                 ),
             ));
             if(\count($servers) == 0){
@@ -142,22 +148,26 @@ class Worker1 {
         $file_peer = new FilePeer();
         $files = $file_peer->get(array(
             "filterby" => array(
-                "table" => "t_map",
-                "column" => "release_id",
-                "condition" => "equals",
-                "rvalue" => $this->release_id,
+                array(
+                    "table" => "t_map",
+                    "column" => "release_id",
+                    "condition" => "equals",
+                    "rvalue" => $this->release_id,
+                ),
             ),
         ));
         if(empty($files) ){
-            throw new Exception("Cannot get release files.");
+            throw new \Exception("Cannot get release files.");
         }
 
         $server_peer = new ServerPeer();
         $servers = $server_peer->get(array(
             "filterby" => array(
-                "column" => "dev",
-                "condition" => "equals",
-                "rvalue" => 1,
+                array(
+                    "column" => "dev",
+                    "condition" => "equals",
+                    "rvalue" => 1,
+                ),
             ),
         ));
         if(empty($servers[0]) ){
@@ -167,9 +177,11 @@ class Worker1 {
 
         $servers = $server_peer->get(array(
             "filterby" => array(
-                "column" => "beta",
-                "condition" => "equals",
-                "rvalue" => 1,
+                array(
+                    "column" => "beta",
+                    "condition" => "equals",
+                    "rvalue" => 1,
+                ),
             ),
         ));
         if(empty($servers[0]) ){

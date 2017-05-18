@@ -1,8 +1,19 @@
 <?php
 
+use M12_Engine\Controllers\Worker2;
+
 require_once realpath(dirname(__FILE__) . "/../engine/autoload.php");
 
 try {
+    $worker = new Worker2();
+    $worker->getLock();
+    if($worker->pickReplicatedServer() ){
+        $worker->holdReplicatedServer();
+    }
+    $worker->releaseLock();
+    if($worker->hasJob() ){
+        $worker->runJob();
+    }
 }
 catch(Exception $e){
     $output = "Error:\n";

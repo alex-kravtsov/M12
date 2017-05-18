@@ -2,9 +2,17 @@
 
 namespace M12_Engine\Models\Servers;
 
+use M12_Engine\Core\Factory;
+
 class Item {
 
     public $error = null;
+
+    public function block($server_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `servers` SET `blocked` = 1 WHERE `id` = " . $server_id;
+        $db->update($query);
+    }
 
     public function makeBackup($server){
         $address = "{$server["ssh_login"]}@{$server["ip_address"]}";
