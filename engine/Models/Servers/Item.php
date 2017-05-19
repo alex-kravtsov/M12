@@ -8,6 +8,26 @@ class Item {
 
     public $error = null;
 
+    public function completeReplication($server_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `servers` SET";
+        $query .= " `replication` = 0,";
+        $query .= " `blocked` = 0,";
+        $query .= " `updated_at` = NOW()";
+        $query .= " WHERE `id` = " . $server_id;
+        $db->update($query);
+    }
+
+    public function setReplicationError($server_id){
+        $db = Factory::getDatabase();
+        $query = "UPDATE `servers` SET";
+        $query .= " `replication` = 0,";
+        $query .= " `blocked` = 0,";
+        $query .= " `error` = 1";
+        $query .= " WHERE `id` = " . $server_id;
+        $db->update($query);
+    }
+
     public function block($server_id){
         $db = Factory::getDatabase();
         $query = "UPDATE `servers` SET `blocked` = 1 WHERE `id` = " . $server_id;

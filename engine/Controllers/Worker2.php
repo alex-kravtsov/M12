@@ -3,8 +3,10 @@
 namespace M12_Engine\Controllers;
 
 use M12_Engine\Core\Factory;
+use M12_Engine\Models\Releases\Peer as ReleasePeer;
 use M12_Engine\Models\Servers\Peer as ServerPeer;
-use M12_Engine\Models\Servers\Items as ServerModel;
+use M12_Engine\Models\Servers\Item as ServerModel;
+use M12_Engine\Models\Logs\Server\Item as ServerErrorLog;
 
 class Worker2 {
 
@@ -49,6 +51,55 @@ class Worker2 {
         ));
         if(empty($files) ){
             throw new \Exception("Cannot get release files.");
+        }
+
+        $server_peer = new ServerPeer();
+        $servers = $server_peer->get(array(
+            "filterby" => array(
+                array(
+                    "column" => "beta",
+                    "condition" => "equals",
+                    "rvalue" => 1,
+                ),
+            ),
+        ));
+        if(empty($servers[0]) ){
+            throw new \Exception("Cannot get beta server.");
+        }
+        $beta_server = $servers[0];
+
+        $servers = $server_peer->get(array(
+            "filterby" => array(
+                array(
+                    "column" => "id",
+                    "condition" => "equals",
+                    "rvalue" => $this->server_id,
+                ),
+            ),
+        ));
+        if(empty($servers[0]) ){
+            throw new \Exception("Cannot get target server.");
+        }
+        $target_server = $servers[0];
+
+        $server_model = new ServerModel();
+        $success = $server_model->replication(array(
+            "source" => $beta_server,
+            "target" => $target_server,
+            "files" => $files,
+        ));
+
+        if(!$success){
+            $error_log = new ServerErrorLog();
+            $error_log->write(array(
+                "server_id" => $this->server_id,
+                "message" => $server_model->error,
+            ));
+
+            $server_model->setReplicationError($this->server_id);
+        }
+        else {
+            $server_model->completeReplication($this->server_id);
         }
     }
 

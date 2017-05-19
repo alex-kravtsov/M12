@@ -56,7 +56,7 @@ class Worker1 {
             ),
         ));
         if(empty($servers[0]) ){
-            throw new Exception("Cannot get backup server.");
+            throw new \Exception("Cannot get backup server.");
         }
         $backup_server = $servers[0];
 
@@ -171,7 +171,7 @@ class Worker1 {
             ),
         ));
         if(empty($servers[0]) ){
-            throw new Exception("Cannot get developer server.");
+            throw new \Exception("Cannot get developer server.");
         }
         $dev_server = $servers[0];
 
@@ -185,7 +185,7 @@ class Worker1 {
             ),
         ));
         if(empty($servers[0]) ){
-            throw new Exception("Cannot get beta server.");
+            throw new \Exception("Cannot get beta server.");
         }
         $beta_server = $servers[0];
 
