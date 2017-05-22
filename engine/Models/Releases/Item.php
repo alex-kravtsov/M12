@@ -2,7 +2,7 @@
 
 namespace M12_Engine\Models\Releases;
 
-use M21_Engine\Core\Factory;
+use M12_Engine\Core\Factory;
 
 class Item {
 
@@ -103,7 +103,7 @@ class Item {
         $values = "";
         foreach($files as $file_id){
             $values .= !empty($values) ? ", " : "";
-            $values .= "({$release_id}, {$file_id})"
+            $values .= "({$release_id}, {$file_id})";
         }
         $query = "INSERT INTO `file_release_map` (`release_id`, `file_id`) VALUES {$values}";
         $db->insert($query);

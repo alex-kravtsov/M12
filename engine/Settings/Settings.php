@@ -7,9 +7,9 @@ class Settings {
     private static $_instance = null;
 
     public $db_host = "localhost";
-    public $db_user = "test";
-    public $db_password = "";
-    public $db_name = "test";
+    public $db_user = "u_updater";
+    public $db_password = "123456";
+    public $db_name = "db_updater";
 
     private function __construct(){
     }

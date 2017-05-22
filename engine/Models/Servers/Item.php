@@ -37,12 +37,12 @@ class Item {
     public function makeBackup($server){
         $address = "{$server["ssh_login"]}@{$server["ip_address"]}";
         $remote_command = "tar -cjf {$server["backup_file"]} {$server["project_directory"]}";
-        $command = "ssh {$address} '{$remote_command}'";
-            \system($command, $return_var);
-            if($return_var != 0){
-                $this->error = "Backup error: {$command}";
-                return false;
-            }
+        $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+        $command = "ssh {$ssh_options} {$address} '{$remote_command}'";
+        \system($command, $return_var);
+        if($return_var != 0){
+            $this->error = "Backup error: {$command}";
+            return false;
         }
 
         return true;
@@ -63,7 +63,10 @@ class Item {
             $scp_target = "{$target_address}:'{$target_path}'";
 
             $scp_options = $file["type"] == "directory" ? " -r" : "";
-            $command = "scp{$scp_options} {$scp_source} {$scp_target}"
+            $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+            $command = "scp {$ssh_options} {$scp_options} {$scp_source} {$scp_target}";
+            print $command . "\n";
+            exit;
             \system($command, $return_var);
             if($return_var != 0){
                 $this->error = "Replication error: {$command}";

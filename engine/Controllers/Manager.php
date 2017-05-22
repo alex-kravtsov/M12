@@ -1,10 +1,10 @@
 <?php
 
+namespace M12_Engine\Controllers;
+
 use M12_Engine\Models\Releases\Peer as ReleasePeer;
 use M12_Engine\Models\Releases\Item as ReleaseModel;
 use M12_Engine\Models\Files\Item as FileModel;
-
-namespace M12_Engine\Controllers;
 
 class Manager {
 
@@ -17,7 +17,7 @@ class Manager {
         $releases = $release_peer->get(array(
             "filterby" => array(
                 array(
-                    "column" => "completed_at",
+                    "column" => "production_completed_at",
                     "condition" => "is null",
                 ),
             ),

@@ -19,7 +19,7 @@ class Peer {
                 "table" => "file_release_map",
                 "alias" => "t_map",
                 "type" => "INNER",
-                "on" => "`t_map`.`file_id` = `t_files`.`file_id`",
+                "on" => "`t_map`.`file_id` = `t_files`.`id`",
                 "enabled" => false,
             ),
         );

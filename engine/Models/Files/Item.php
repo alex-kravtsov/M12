@@ -27,7 +27,8 @@ class Item {
         $user = $server["ssh_login"];
         $host = $server["ip_address"];
         $basepath = $server["project_directory"];
-        $command = "ssh {$user}@{$host} 'if [ -d {$basepath}/{$file} ] ; then echo 'directory' ; elif [ -f {$basepath}/{$file} ] ; then echo 'file' ; fi'";
+        $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+        $command = "ssh {$ssh_options} {$user}@{$host} 'if [ -d {$basepath}/{$file} ] ; then echo 'directory' ; elif [ -f {$basepath}/{$file} ] ; then echo 'file' ; fi'";
         $output = \system($command, $retval);
 
         switch($output){
