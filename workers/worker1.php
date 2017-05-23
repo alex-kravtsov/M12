@@ -7,11 +7,15 @@ require_once realpath(dirname(__FILE__) . "/../engine/autoload.php");
 try {
     $worker = new Worker1();
 
-    if($worker->pickBetaRelease() ){
-        $worker->runBetaRelease();
-    }
-    elseif($worker->pickProductionRelease() ){
-        $worker->runProductionRelease();
+    while(true){
+        if($worker->pickBetaRelease() ){
+            $worker->runBetaRelease();
+        }
+        elseif($worker->pickProductionRelease() ){
+            $worker->runProductionRelease();
+        }
+
+        sleep(3);
     }
 }
 catch(Exception $e){

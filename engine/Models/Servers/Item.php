@@ -56,17 +56,15 @@ class Item {
         foreach($files as $file){
             $source_address = "{$source["ssh_login"]}@{$source["ip_address"]}";
             $source_path = "{$source["project_directory"]}/{$file["path"]}";
-            $scp_source = "{$source_address}:'{$source_path}'";
 
             $target_address = "{$target["ssh_login"]}@{$target["ip_address"]}";
             $target_path = "{$target["project_directory"]}/{$file["path"]}";
-            $scp_target = "{$target_address}:'{$target_path}'";
 
             $scp_options = $file["type"] == "directory" ? " -r" : "";
             $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
-            $command = "scp {$ssh_options} {$scp_options} {$scp_source} {$scp_target}";
-            print $command . "\n";
-            exit;
+            $command1 = "ssh {$ssh_options} {$source_address} 'cd {$source["project_directory"]} ; tar cj {$file["path"]}'";
+            $command2 = "ssh {$ssh_options} {$target_address} 'tar xj -C {$target["project_directory"]}'";
+            $command = "{$command1} | {$command2}";
             \system($command, $return_var);
             if($return_var != 0){
                 $this->error = "Replication error: {$command}";

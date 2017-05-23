@@ -6,13 +6,18 @@ require_once realpath(dirname(__FILE__) . "/../engine/autoload.php");
 
 try {
     $worker = new Worker2();
-    $worker->getLock();
-    if($worker->pickReplicatedServer() ){
-        $worker->holdReplicatedServer();
-    }
-    $worker->releaseLock();
-    if($worker->hasJob() ){
-        $worker->runJob();
+
+    while(true){
+        $worker->getLock();
+        if($worker->pickReplicatedServer() ){
+            $worker->holdReplicatedServer();
+        }
+        $worker->releaseLock();
+        if($worker->hasJob() ){
+            $worker->runJob();
+        }
+
+        sleep(3);
     }
 }
 catch(Exception $e){

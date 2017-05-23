@@ -3,6 +3,7 @@
 namespace M12_Engine\Controllers;
 
 use M12_Engine\Core\Factory;
+use M12_Engine\Models\Files\Peer as FilePeer;
 use M12_Engine\Models\Releases\Peer as ReleasePeer;
 use M12_Engine\Models\Servers\Peer as ServerPeer;
 use M12_Engine\Models\Servers\Item as ServerModel;
@@ -34,7 +35,7 @@ class Worker2 {
         ));
 
         if(empty($releases[0]["id"]) ){
-            throw new \Exception("Release is not found.")
+            throw new \Exception("Release is not found.");
         }
         $release_id = $releases[0]["id"];
 
@@ -143,7 +144,7 @@ class Worker2 {
 
     public function getLock(){
         $db = Factory::getDatabase();
-        $query = "LOCK TABLES `servers`";
+        $query = "LOCK TABLES `servers` WRITE, `servers` AS `t_servers` WRITE";
         $db->execute($query);
     }
 

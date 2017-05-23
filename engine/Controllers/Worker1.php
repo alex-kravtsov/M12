@@ -110,6 +110,8 @@ class Worker1 {
             if(\count($servers) == 0){
                 $done = true;
             }
+
+            \sleep(3);
         }
 
         $release_model->completeProductionUpdate($this->release_id);
@@ -208,6 +210,7 @@ class Worker1 {
         }
         else {
             $release_model->completeBetaReplication($this->release_id);
+            $server_model->completeReplication($beta_server["id"]);
         }
     }
 }
