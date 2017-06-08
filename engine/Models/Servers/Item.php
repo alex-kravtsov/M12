@@ -37,14 +37,17 @@ class Item {
     public function makeBackup($server){
         $address = "{$server["ssh_login"]}@{$server["ip_address"]}";
         $remote_command = "tar -cjf {$server["backup_file"]} {$server["project_directory"]}";
-        $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+        $constants = Factory::getConstants();
+        $ssh_options = $constants->ssh_options_g;
+//        $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
         $command = "ssh {$ssh_options} {$address} '{$remote_command}'";
+//        echo $command;
         \system($command, $return_var);
         if($return_var != 0){
             $this->error = "Backup error: {$command}";
             return false;
         }
-
+                
         return true;
     }
 
@@ -61,7 +64,10 @@ class Item {
             $target_path = "{$target["project_directory"]}/{$file["path"]}";
 
             $scp_options = $file["type"] == "directory" ? " -r" : "";
-            $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+//            $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+            $constants = Factory::getConstants();  
+            $ssh_options = $constants->ssh_options_g;
+
             $command1 = "ssh {$ssh_options} {$source_address} 'cd {$source["project_directory"]} ; tar cj {$file["path"]}'";
             $command2 = "ssh {$ssh_options} {$target_address} 'tar xj -C {$target["project_directory"]}'";
             $command = "{$command1} | {$command2}";

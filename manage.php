@@ -11,14 +11,12 @@ require_once dirname(__FILE__) . "/engine/autoload.php";
  * @var int $release_id Required if $task is release_complete. Release ID.
  */
 
-/*$task = 'release_create';
+$task = 'release_create';
 $files = array(
-    "front/php_local/chat.php",
-    "front/php_local/add_client.php",
-    "front/php_local/server_version.php"
+    "company/admin"
 );
-$release_title = 'Test';*/
-$task = 'release_complete';
+$release_title = 'company/admin 24/05/2017';
+$task = 'release_create';
 $release_id = 1;
 
 try {

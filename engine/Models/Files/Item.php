@@ -6,6 +6,7 @@ use M12_Engine\Core\Factory;
 use M12_Engine\Models\Servers\Peer as ServerPeer;
 use M12_Engine\Models\Files\Peer as FilePeer;
 
+
 class Item {
     
     public function update($file){
@@ -27,12 +28,14 @@ class Item {
         $user = $server["ssh_login"];
         $host = $server["ip_address"];
         $basepath = $server["project_directory"];
-        $ssh_options = "-o IdentityFile=/root/.ssh/updater_rsa";
+        $constants = Factory::getConstants();
+        $ssh_options = $constants->ssh_options_g; 
         $command = "ssh {$ssh_options} {$user}@{$host} 'if [ -d {$basepath}/{$file} ] ; then echo 'directory' ; elif [ -f {$basepath}/{$file} ] ; then echo 'file' ; fi'";
         $output = \system($command, $retval);
 
-        switch($output){
+        switch($retval){
         case "directory":
+            break;
         case "file":
             break;
         default:

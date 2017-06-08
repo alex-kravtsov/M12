@@ -34,6 +34,7 @@ class Peer {
 
         $query = "SELECT {$columns} FROM {$table_references}";
         $query .= !empty($where) ? " WHERE {$where}" : "";
+
         return $db->getRows($query);
     }
 }
